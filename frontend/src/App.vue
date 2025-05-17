@@ -1,23 +1,31 @@
 <script setup>
-// import HelloWorld from './components/HelloWorld.vue'
+import Navbar from './components/Navbar.vue';
+import Footer from './components/Footer.vue';
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <!-- <HelloWorld msg="You did it!" /> -->
-      <h1>物業管理系統 - 前端</h1>
-    </div>
-  </header>
-
-  <main>
-    <p>前端應用程式正在建構中...</p>
-  </main>
+  <div id="app-container">
+    <Navbar />
+    <main class="main-content">
+      <router-view />
+    </main>
+    <Footer />
+  </div>
 </template>
 
 <style scoped>
+#app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding: 1rem;
+}
+
+/* Keep existing styles if they are still relevant, or remove/modify as needed */
 header {
   line-height: 1.5;
 }
@@ -28,20 +36,11 @@ header {
 }
 
 @media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+  /* Adjust layout for larger screens if necessary */
+  /* For example, you might want to ensure the main content area is well-defined */
+  .main-content {
+    /* max-width: 1200px; /* Example: limit content width */
+    /* margin: 0 auto; /* Example: center content */
   }
 }
 </style>
