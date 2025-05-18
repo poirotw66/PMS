@@ -8,7 +8,7 @@ from .models import PotentialCustomer, PotentialCustomerDB, Base # Import Base a
 # For local testing with PostgreSQL, it might look like:
 # SQLALCHEMY_DATABASE_URL = "postgresql://user:password@host:port/dbname"
 # For Cloud SQL, you'll need to configure connection string, possibly with Cloud SQL Auth Proxy
-SQLALCHEMY_DATABASE_URL = "postgresql://user:password@host:port/dbname" # TODO: Replace with actual DB URL
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres:248605@localhost:5432/postgres" # TODO: Replace with actual DB URL
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -16,7 +16,18 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 # Create database tables if they don't exist
 Base.metadata.create_all(bind=engine)
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"], # Replace with your frontend origin
+    allow_credentials=True,
+    allow_methods=["*"] , # Allow all methods
+    allow_headers=["*"] , # Allow all headers
+)
 
 # Dependency to get DB session
 def get_db():
@@ -38,6 +49,7 @@ def create_potential_customer(customer: PotentialCustomer, db: Session = Depends
     return db_customer
 
 @router.get("/", response_model=List[PotentialCustomer])
+@app.get("/potential-customers")
 def read_potential_customers(db: Session = Depends(get_db)):
     customers = db.query(PotentialCustomerDB).all()
     return customers

@@ -12,9 +12,9 @@ class PotentialCustomerDB(Base):
     phone = Column(String)
     needs = Column(String)
     job = Column(String)
-    emergency_contact_name = Column(String)
-    emergency_contact_phone = Column(String)
-    emergency_contact_relationship = Column(String)
+    move_in_date = Column(String)  # 新增
+    viewing_records = Column(String)  # 新增
+    status = Column(String)  # 新增
 
 # Pydantic model for request/response validation
 class PotentialCustomer(BaseModel):
@@ -22,9 +22,9 @@ class PotentialCustomer(BaseModel):
     phone: str
     needs: str
     job: str
-    emergency_contact_name: str
-    emergency_contact_phone: str
-    emergency_contact_relationship: str
+    move_in_date: str | None = None # 新增，允許 None
+    viewing_records: str | None = None # 新增，允許 None
+    status: str | None = None # 新增，允許 None
 
     class Config:
         orm_mode = True

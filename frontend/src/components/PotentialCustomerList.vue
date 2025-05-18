@@ -15,17 +15,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="customer in potentialCustomers" :key="customer.name">
+        <tr v-for="customer in potentialCustomers" :key="customer.id">
           <td>{{ customer.name }}</td>
           <td>{{ customer.phone }}</td>
-          <td>{{ customer.requirements }}</td>
+          <td>{{ customer.needs }}</td>
           <td>{{ customer.job }}</td>
           <td>{{ customer.move_in_date }}</td>
           <td>{{ customer.viewing_records }}</td>
           <td>{{ customer.status }}</td>
           <td>
-            <button>編輯</button>
-            <button>刪除</button>
+            <button @click="$emit('edit-customer', customer)">編輯</button>
+            <button @click="deleteCustomer(customer.id)">刪除</button>
           </td>
         </tr>
       </tbody>
@@ -39,14 +39,43 @@ import axios from 'axios';
 
 const potentialCustomers = ref([]);
 
-onMounted(async () => {
+const fetchCustomers = async () => {
   try {
     const response = await axios.get('http://localhost:8000/potential-customers');
     potentialCustomers.value = response.data;
+    console.log('Fetched customers data structure:', response.data);
+    // Add a log to check the id of each customer
+    potentialCustomers.value.forEach(customer => {
+      console.log('Customer ID:', customer.id);
+    });
   } catch (error) {
     console.error('Error fetching potential customers:', error);
+  } finally {
+    console.log('Fetched customers:', potentialCustomers.value);
   }
+};
+
+const deleteCustomer = async (customerId) => {
+  console.log('Attempting to delete customer with ID:', customerId); // Add this line
+  if (customerId === undefined || customerId === null) {
+    console.error('Cannot delete customer: customer ID is undefined or null.');
+    return; // Stop execution if ID is invalid
+  }
+  try {
+    await axios.delete(`http://localhost:8000/potential-customers/${customerId}`);
+    potentialCustomers.value = potentialCustomers.value.filter(customer => customer.id !== customerId);
+    console.log(`Customer with ID ${customerId} deleted successfully.`);
+  } catch (error) {
+    console.error(`Error deleting customer with ID ${customerId}:`, error);
+  }
+};
+
+onMounted(() => {
+  fetchCustomers();
 });
+
+import { defineExpose } from 'vue';
+defineExpose({ fetchCustomers });
 </script>
 
 <style scoped>
