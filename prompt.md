@@ -1,5 +1,7 @@
 # 物業管理系統
-
+啟動postgres server
+(PMS) PS C:\Users\sora0\Desktop\PMS\backend> uvicorn app.main:app --reload
+(PMS) PS C:\Users\sora0\Desktop\PMS\frontend> npm run dev
 ## 部署流程
  - 後端 (Cloud Run):
   - Python + FastAPI
