@@ -2,7 +2,9 @@ from fastapi import FastAPI, APIRouter, Depends, HTTPException
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from typing import List
-from .models import PotentialCustomer, PotentialCustomerDB, Base, Property, PropertyDB, PropertyAsset, PropertyAssetDB, Contract, ContractDB, RepairRequest, RepairRequestDB, Resident, ResidentDB # Import Resident and ResidentDB
+from .models import PotentialCustomer, PotentialCustomerDB, Property, PropertyDB, PropertyAsset, PropertyAssetDB, Contract, ContractDB, RepairRequest, RepairRequestDB, Resident, ResidentDB # Import Resident and ResidentDB
+from .database import Base # 從 database.py 匯入 Base
+from .routers import properties # Import the new properties router
 
 # Database Configuration (replace with your actual database URL)
 # For local testing with PostgreSQL, it might look like:
@@ -19,6 +21,9 @@ Base.metadata.create_all(bind=engine)
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# Include the new routers
+app.include_router(properties.router)
 
 # Add CORS middleware
 app.add_middleware(

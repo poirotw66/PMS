@@ -1,8 +1,7 @@
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship # Import relationship
 from pydantic import BaseModel
-
-Base = declarative_base()
+from .database import Base # 從 database.py 匯入 Base
 
 class PotentialCustomerDB(Base):
     __tablename__ = "potential_customers"
@@ -72,6 +71,10 @@ class PropertyDB(Base):
     size_sq_ft = Column(String) # 物件坪數 (使用字串以包含單位或備註)
     features = Column(String) # 物件特色
 
+    # Relationships
+    assets = relationship("PropertyAssetDB", back_populates="property")
+    repair_requests = relationship("RepairRequestDB", back_populates="property")
+
 # Pydantic model for Property
 class Property(BaseModel):
     address: str
@@ -104,12 +107,15 @@ class PropertyAssetDB(Base):
     __tablename__ = "property_assets"
 
     id = Column(Integer, primary_key=True, index=True)
-    property_id = Column(Integer, index=True) # 關聯到 PropertyDB 的 ID
+    property_id = Column(Integer, ForeignKey("properties.id"), index=True) # 關聯到 PropertyDB 的 ID
     purchase_date = Column(String) # 資產購買日期
     name = Column(String) # 資產名稱/品牌/型號
     purchase_price = Column(String) # 資產購買價格 (使用字串以包含單位或備註)
     purchase_vendor = Column(String) # 購買廠商/電話
     warranty_period = Column(String) # 資產保固期間
+
+    # Relationship
+    property = relationship("PropertyDB", back_populates="assets")
 
 # Pydantic model for Property Asset
 class PropertyAsset(BaseModel):
@@ -191,11 +197,14 @@ class RepairRequestDB(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     tenant_id = Column(Integer, index=True) # 關聯到 PotentialCustomerDB 的 ID (報修人)
-    property_id = Column(Integer, index=True) # 關聯到 PropertyDB 的 ID (報修物件)
+    property_id = Column(Integer, ForeignKey("properties.id"), index=True) # 關聯到 PropertyDB 的 ID (報修物件)
     request_date = Column(String) # 報修日期
     description = Column(String) # 報修內容
     resolution_method = Column(String) # 結案方式 (修繕方式及費用)
     resolution_date = Column(String) # 結案日期
+
+    # Relationship
+    property = relationship("PropertyDB", back_populates="repair_requests")
 
 # Pydantic model for Repair Request
 class RepairRequest(BaseModel):
