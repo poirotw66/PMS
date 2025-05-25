@@ -1,17 +1,21 @@
 <template>
   <nav class="navbar">
-    <div class="navbar-brand">
-      <router-link to="/" class="navbar-item brand-text">物業管理系統</router-link>
-    </div>
-    <div class="navbar-menu">
-      <div class="navbar-start">
-        <router-link to="/" class="navbar-item">首頁</router-link>
-        <router-link to="/residents" class="navbar-item">住戶管理</router-link>
-        <router-link to="/properties" class="navbar-item">物件管理</router-link>
-        <router-link to="/payments" class="navbar-item">繳費管理</router-link>
-        <router-link to="/potential-customers">潛在客戶管理</router-link>
-        <router-link to="/maintenance" class="navbar-item">維修管理</router-link>
-        <router-link to="/announcements" class="navbar-item">公告管理</router-link>
+    <div class="container navbar-container">
+      <div class="navbar-brand">
+        <router-link to="/" class="navbar-logo">
+          <span class="logo-text">物業管理系統</span>
+        </router-link>
+      </div>
+      <div class="navbar-menu">
+        <div class="navbar-start">
+          <router-link to="/" class="navbar-item">首頁</router-link>
+          <router-link to="/residents" class="navbar-item">住戶管理</router-link>
+          <router-link to="/properties" class="navbar-item">物件管理</router-link>
+          <router-link to="/payments" class="navbar-item">繳費管理</router-link>
+          <router-link to="/potential-customers" class="navbar-item">潛在客戶</router-link>
+          <router-link to="/maintenance" class="navbar-item">維修管理</router-link>
+          <router-link to="/announcements" class="navbar-item">公告管理</router-link>
+        </div>
       </div>
     </div>
   </nav>
@@ -22,9 +26,15 @@
 
 <style scoped>
 .navbar {
-  background-color: #f8f9fa;
-  padding: 0.5rem 1rem;
-  border-bottom: 1px solid #dee2e6;
+  background-color: var(--primary-color);
+  padding: var(--spacing-sm) 0;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -35,11 +45,17 @@
   align-items: center;
 }
 
-.brand-text {
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo-text {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #343a40;
-  text-decoration: none;
+  color: white;
+  margin-left: var(--spacing-sm);
 }
 
 .navbar-menu {
@@ -49,18 +65,39 @@
 .navbar-start {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .navbar-item {
-  padding: 0.5rem 0.75rem;
-  color: #495057;
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
+  transition: var(--transition);
+  border-radius: var(--border-radius);
+  margin: 0 2px;
 }
 
 .navbar-item:hover,
 .navbar-item.router-link-exact-active {
-  color: #007bff;
-  background-color: #e9ecef;
-  border-radius: 0.25rem;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .navbar-start {
+    margin-top: var(--spacing-sm);
+    flex-wrap: wrap;
+  }
+  
+  .navbar-item {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    margin: 2px;
+  }
 }
 </style>

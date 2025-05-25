@@ -4,17 +4,22 @@ import Footer from './components/Footer.vue';
 </script>
 
 <template>
-  <div id="app-container">
+  <div id="app">
     <Navbar />
     <main class="main-content">
-      <router-view />
+      <div class="container">
+        <router-view />
+      </div>
     </main>
     <Footer />
   </div>
 </template>
 
-<style scoped>
-#app-container {
+<style>
+/* 全局樣式，不使用 scoped */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+
+#app {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -22,25 +27,43 @@ import Footer from './components/Footer.vue';
 
 .main-content {
   flex: 1;
-  padding: 1rem;
+  padding: var(--spacing-md) 0;
+  background-color: var(--bg-light);
 }
 
-/* Keep existing styles if they are still relevant, or remove/modify as needed */
-header {
-  line-height: 1.5;
+/* 共用的頁面標題樣式 */
+.page-title {
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--primary-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.page-title h1 {
+  margin-bottom: 0;
+  color: var(--text-color);
 }
 
-@media (min-width: 1024px) {
-  /* Adjust layout for larger screens if necessary */
-  /* For example, you might want to ensure the main content area is well-defined */
-  .main-content {
-    /* max-width: 1200px; /* Example: limit content width */
-    /* margin: 0 auto; /* Example: center content */
+/* 基本布局組件 */
+.section {
+  margin-bottom: var(--spacing-xl);
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--spacing-sm);
+  }
+  
+  .page-title {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .page-title .actions {
+    margin-top: var(--spacing-sm);
   }
 }
 </style>

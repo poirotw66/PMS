@@ -1,52 +1,72 @@
 <template>
   <div class="property-list">
-    <h2>物件列表</h2>
-    <div class="property-actions">
-      <button @click="$emit('add-property')" class="btn btn-success">新增物件</button>
+    <div class="page-title">
+      <h1>物件管理</h1>
+      <div class="actions">
+        <button @click="$emit('add-property')" class="btn btn-success">
+          <i class="fas fa-plus"></i> 新增物件
+        </button>
+      </div>
     </div>
+    
     <div class="properties-container" v-if="properties && properties.length">
       <div v-for="property in properties" :key="property.id" class="property-card">
         <div class="property-header">
           <h3>{{ property.address }}</h3>
-          <div class="property-actions">
-            <button @click="$emit('view-property', property.id)" class="btn btn-info">查看詳情</button>
-            <button @click="$emit('edit-property', property)" class="btn btn-warning">編輯</button>
-            <button @click="emitDeleteProperty(property.id)" class="btn btn-danger">刪除</button>
+          <div class="property-meta">
+            <span class="property-size">{{ property.size_sq_ft }} 坪</span>
           </div>
         </div>
+        
         <div class="property-body">
           <div class="property-info">
-            <p><strong>物件坪數:</strong> {{ property.size_sq_ft }}</p>
-            <p v-if="property.features"><strong>物件特色:</strong> {{ property.features }}</p>
+            <p v-if="property.features" class="property-features">{{ property.features }}</p>
           </div>
-          <div class="property-assets" v-if="property.assets && property.assets.length">
-            <h4>資產清單</h4>
-            <ul>
-              <li v-for="asset in property.assets" :key="asset.id">
-                {{ asset.name }}
-                <span v-if="asset.purchase_date">(購買日期: {{ asset.purchase_date }})</span>
-              </li>
-            </ul>
-          </div>
-          <div class="property-repairs" v-if="property.repair_requests && property.repair_requests.length">
-            <h4>維修紀錄</h4>
-            <ul>
-              <li v-for="request in property.repair_requests" :key="request.id">
-                {{ request.description }}
-                <span v-if="request.request_date">(報修日期: {{ request.request_date }})</span>
-                <span v-if="request.resolution_date" class="status-resolved">(已結案: {{ request.resolution_date }})</span>
-                <span v-else class="status-pending">(待處理)</span>
-              </li>
-            </ul>
+          
+          <div class="property-stats">
+            <div class="stat-item">
+              <span class="stat-label">資產數量</span>
+              <span class="stat-value">{{ property.assets ? property.assets.length : 0 }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">維修請求</span>
+              <span class="stat-value">{{ property.repair_requests ? property.repair_requests.length : 0 }}</span>
+            </div>
           </div>
         </div>
+        
         <div class="property-footer">
-          <button @click="$emit('manage-assets', property.id)" class="btn btn-secondary">管理資產</button>
-          <button @click="$emit('manage-repairs', property.id)" class="btn btn-secondary">管理維修</button>
+          <div class="property-actions">
+            <button @click="$emit('view-property', property.id)" class="btn btn-info btn-sm">
+              <i class="fas fa-eye"></i> 查看
+            </button>
+            <button @click="$emit('edit-property', property)" class="btn btn-warning btn-sm">
+              <i class="fas fa-edit"></i> 編輯
+            </button>
+            <button @click="emitDeleteProperty(property.id)" class="btn btn-danger btn-sm">
+              <i class="fas fa-trash"></i> 刪除
+            </button>
+          </div>
+          
+          <div class="property-management">
+            <button @click="$emit('manage-assets', property.id)" class="btn btn-secondary btn-sm">
+              <i class="fas fa-box"></i> 管理資產
+            </button>
+            <button @click="$emit('manage-repairs', property.id)" class="btn btn-secondary btn-sm">
+              <i class="fas fa-tools"></i> 管理維修
+            </button>
+          </div>
         </div>
       </div>
     </div>
-    <p v-else>沒有物件資料。</p>
+    
+    <div v-else class="empty-state">
+      <div class="empty-icon">
+        <i class="fas fa-home"></i>
+      </div>
+      <p>尚無物件資料</p>
+      <button @click="$emit('add-property')" class="btn btn-primary">新增第一個物件</button>
+    </div>
   </div>
 </template>
 
@@ -69,133 +89,164 @@ const emit = defineEmits([
 ]); 
 
 const emitDeleteProperty = (propertyId) => {
-  if (confirm('確定要刪除此物件嗎？')) { // 添加確認提示
-    emit('delete-property', propertyId); // 觸發事件並傳遞物件 ID
+  if (confirm('確定要刪除此物件嗎？此操作無法撤銷。')) {
+    emit('delete-property', propertyId);
   }
 };
 </script>
 
 <style scoped>
 .property-list {
-  margin-top: 1rem;
-}
-
-.property-actions {
-  margin-bottom: 1rem;
-  display: flex;
-  justify-content: flex-end;
+  margin-bottom: var(--spacing-xl);
 }
 
 .properties-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--spacing-md);
 }
 
 .property-card {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--bg-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition);
+  border: 1px solid var(--border-color);
+  height: 100%;
+}
+
+.property-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.property-header {
+  padding: var(--spacing-md);
+  background-color: var(--primary-light);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.property-header h3 {
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: 1.2rem;
+  color: var(--text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.property-meta {
+  display: flex;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.property-size {
+  font-weight: 500;
+  background-color: var(--bg-light);
+  padding: 0.1rem 0.5rem;
+  border-radius: 12px;
+}
+
+.property-body {
+  padding: var(--spacing-md);
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
 
-.property-header {
-  padding: 1rem;
-  background-color: #f5f5f5;
-  border-bottom: 1px solid #e0e0e0;
+.property-info {
+  margin-bottom: var(--spacing-md);
 }
 
-.property-header h3 {
+.property-features {
   margin: 0;
-  font-size: 1.2rem;
-  color: #333;
-  margin-bottom: 0.5rem;
+  color: var(--text-light);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.property-header .property-actions {
+.property-stats {
   display: flex;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: auto;
+  gap: var(--spacing-md);
 }
 
-.property-body {
-  padding: 1rem;
-  flex-grow: 1;
+.stat-item {
+  flex: 1;
+  text-align: center;
+  background-color: var(--bg-light);
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius);
 }
 
-.property-info p {
-  margin: 0.5rem 0;
+.stat-label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-bottom: var(--spacing-xs);
 }
 
-.property-assets, .property-repairs {
-  margin-top: 1rem;
-}
-
-.property-assets h4, .property-repairs h4 {
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-  color: #555;
-}
-
-.property-assets ul, .property-repairs ul {
-  list-style: none;
-  padding-left: 1rem;
-}
-
-.property-assets li, .property-repairs li {
-  margin-bottom: 0.25rem;
-  font-size: 0.9rem;
+.stat-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primary-color);
 }
 
 .property-footer {
-  padding: 1rem;
-  border-top: 1px solid #e0e0e0;
+  padding: var(--spacing-md);
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-light);
+}
+
+.property-actions {
+  display: flex;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
+}
+
+.property-management {
   display: flex;
   justify-content: space-between;
 }
 
-.btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s;
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-xl) 0;
+  color: var(--text-lighter);
 }
 
-.btn-success {
-  background-color: #4CAF50;
-  color: white;
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-md);
+  color: var(--border-color);
 }
 
-.btn-info {
-  background-color: #2196F3;
-  color: white;
+.empty-state p {
+  margin-bottom: var(--spacing-md);
+  font-size: 1.1rem;
 }
 
-.btn-warning {
-  background-color: #FF9800;
-  color: white;
-}
-
-.btn-danger {
-  background-color: #F44336;
-  color: white;
-}
-
-.btn-secondary {
-  background-color: #f5f5f5;
-  color: #333;
-  border: 1px solid #ddd;
-}
-
-.status-resolved {
-  color: #4CAF50;
-}
-
-.status-pending {
-  color: #FF9800;
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .properties-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .property-management {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+  
+  .property-management button {
+    width: 100%;
+  }
 }
 </style>

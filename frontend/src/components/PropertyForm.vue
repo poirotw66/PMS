@@ -1,9 +1,9 @@
 <template>
   <div class="property-form">
-    <h3>{{ isEdit ? '編輯物件' : '新增物件' }}</h3>
+    <h3><i class="fas fa-building"></i> {{ isEdit ? '編輯物件' : '新增物件' }}</h3>
     <form @submit.prevent="handleSubmit">
       <div class="form-group">
-        <label for="address">物件地址 *</label>
+        <label for="address"><i class="fas fa-map-marker-alt"></i> 物件地址 *</label>
         <input 
           id="address" 
           v-model="formData.address" 
@@ -15,19 +15,22 @@
       </div>
 
       <div class="form-group">
-        <label for="size_sq_ft">物件坪數 *</label>
-        <input 
-          id="size_sq_ft" 
-          v-model="formData.size_sq_ft" 
-          type="text" 
-          class="form-control" 
-          required
-          placeholder="請輸入物件坪數，可包括主建物、附屬建物等細項面積"
-        />
+        <label for="size_sq_ft"><i class="fas fa-ruler-combined"></i> 物件坪數 *</label>
+        <div class="input-with-icon">
+          <input 
+            id="size_sq_ft" 
+            v-model="formData.size_sq_ft" 
+            type="text" 
+            class="form-control" 
+            required
+            placeholder="請輸入物件坪數，可包括主建物、附屬建物等細項面積"
+          />
+          <span class="input-append">坪</span>
+        </div>
       </div>
 
       <div class="form-group">
-        <label for="features">物件特色</label>
+        <label for="features"><i class="fas fa-list-ul"></i> 物件特色</label>
         <textarea 
           id="features" 
           v-model="formData.features" 
@@ -42,8 +45,12 @@
       </div>
 
       <div class="form-actions">
-        <button type="submit" class="btn btn-primary">{{ isEdit ? '更新' : '新增' }}</button>
-        <button type="button" class="btn btn-secondary" @click="cancelForm">取消</button>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-{{ isEdit ? 'save' : 'plus-circle' }}"></i> {{ isEdit ? '更新' : '新增' }}
+        </button>
+        <button type="button" class="btn btn-secondary" @click="cancelForm">
+          <i class="fas fa-times"></i> 取消
+        </button>
       </div>
     </form>
   </div>
@@ -94,62 +101,75 @@ const cancelForm = () => {
 
 <style scoped>
 .property-form {
-  padding: 1rem;
-  background-color: #f9f9f9;
-  border-radius: 4px;
-  margin-bottom: 1rem;
+  padding: var(--spacing-md);
+  background-color: var(--bg-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  margin-bottom: var(--spacing-md);
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-md);
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
+  margin-bottom: var(--spacing-xs);
+  font-weight: 500;
+  color: var(--text-color);
 }
 
 .form-control {
+  display: block;
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: var(--spacing-sm);
   font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-append {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  font-size: 0.9rem;
 }
 
 .form-text {
   display: block;
-  margin-top: 0.25rem;
+  margin-top: var(--spacing-xs);
   font-size: 0.85rem;
 }
 
 .text-muted {
-  color: #6c757d;
+  color: var(--text-light);
 }
 
 .form-actions {
   display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
 }
 
-.btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.btn-primary {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.btn-secondary {
-  background-color: #f5f5f5;
-  color: #333;
-  border: 1px solid #ddd;
+/* Form utility classes */
+::placeholder {
+  color: var(--text-lighter);
+  opacity: 0.7;
 }
 </style>

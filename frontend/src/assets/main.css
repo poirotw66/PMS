@@ -1,17 +1,319 @@
-/* Basic Reset */
-body, h1, p {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+/* 全局變數 - 統一色彩與風格 */
+:root {
+  --primary-color: #3498db;
+  --primary-dark: #2980b9;
+  --primary-light: #e8f4fd;
+  --secondary-color: #2ecc71;
+  --secondary-dark: #27ae60;
+  --secondary-light: #e8f8f1;
+  --accent-color: #f39c12;
+  --danger-color: #e74c3c;
+  --success-color: #2ecc71;
+  --warning-color: #f39c12;
+  --info-color: #3498db;
+  --text-color: #333333;
+  --text-light: #666666;
+  --text-lighter: #999999;
+  --bg-color: #ffffff;
+  --bg-light: #f8f9fa;
+  --bg-dark: #e9ecef;
+  --border-color: #dee2e6;
+  --border-radius: 4px;
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 5px 15px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
 }
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+/* 重置基本樣式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-color);
+  background-color: var(--bg-light);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: var(--spacing-md);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-color);
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.1rem; }
+h6 { font-size: 1rem; }
+
+p {
+  margin-bottom: var(--spacing-md);
 }
 
 a {
-  color: #42b983;
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--primary-dark);
+}
+
+/* 通用容器樣式 */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+/* 按鈕樣式 */
+.btn {
+  display: inline-block;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  color: white;
+}
+
+.btn-secondary {
+  background-color: var(--bg-light);
+  border-color: var(--border-color);
+  color: var(--text-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-dark);
+}
+
+.btn-success {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: var(--secondary-dark);
+  color: white;
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+  color: white;
+}
+
+.btn-warning {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+.btn-warning:hover {
+  background-color: #d35400;
+  color: white;
+}
+
+.btn-sm {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: 0.875rem;
+}
+
+/* 表單樣式 */
+.form-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: var(--spacing-sm);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+/* 卡片樣式 */
+.card {
+  background-color: var(--bg-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  margin-bottom: var(--spacing-md);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: var(--spacing-md);
+  background-color: var(--bg-light);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.card-body {
+  padding: var(--spacing-md);
+}
+
+.card-footer {
+  padding: var(--spacing-md);
+  background-color: var(--bg-light);
+  border-top: 1px solid var(--border-color);
+}
+
+/* 表格樣式 */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--spacing-md);
+}
+
+.table th,
+.table td {
+  padding: var(--spacing-sm);
+  border: 1px solid var(--border-color);
+}
+
+.table th {
+  background-color: var(--bg-light);
+  font-weight: 600;
+  text-align: left;
+}
+
+.table tr:nth-child(even) {
+  background-color: var(--bg-light);
+}
+
+/* 狀態標籤 */
+.status {
+  display: inline-block;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status-success {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.status-warning {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+.status-danger {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.status-info {
+  background-color: var(--info-color);
+  color: white;
+}
+
+/* 動畫效果 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* 載入中動畫 */
+.loading-spinner {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid rgba(52, 152, 219, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 卡片懸浮效果 */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
 }

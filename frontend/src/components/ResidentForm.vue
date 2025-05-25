@@ -1,49 +1,71 @@
 <template>
   <div class="resident-form">
-    <h2>{{ resident ? '編輯承租人' : '新增承租人' }}</h2>
+    <h3><i class="fas fa-user-alt"></i> {{ resident ? '編輯承租人' : '新增承租人' }}</h3>
     <form @submit.prevent="save">
-      <div>
-        <label for="name">姓名:</label>
-        <input type="text" id="name" v-model="formData.name" required>
+      <div class="form-row">
+        <div class="form-group form-group-large">
+          <label for="name"><i class="fas fa-user"></i> 姓名:</label>
+          <input type="text" id="name" v-model="formData.name" class="form-control" required placeholder="請輸入承租人姓名">
+        </div>
+        <div class="form-group">
+          <label for="id_number"><i class="fas fa-id-card"></i> 身份證字號:</label>
+          <input type="text" id="id_number" v-model="formData.id_number" class="form-control" required placeholder="請輸入身份證字號">
+        </div>
       </div>
-      <div>
-        <label for="id_number">身份證字號:</label>
-        <input type="text" id="id_number" v-model="formData.id_number" required>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="phone"><i class="fas fa-phone"></i> 連絡電話:</label>
+          <input type="text" id="phone" v-model="formData.phone" class="form-control" required placeholder="請輸入聯絡電話">
+        </div>
+        <div class="form-group">
+          <label for="email"><i class="fas fa-envelope"></i> 電子郵件:</label>
+          <input type="email" id="email" v-model="formData.email" class="form-control" placeholder="請輸入電子郵件">
+        </div>
       </div>
-      <div>
-        <label for="phone">連絡電話:</label>
-        <input type="text" id="phone" v-model="formData.phone" required>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="property_id"><i class="fas fa-building"></i> 物業 ID:</label>
+          <input type="text" id="property_id" v-model="formData.property_id" class="form-control" placeholder="請輸入物業 ID">
+        </div>
+        <div class="form-group">
+          <label for="contract_id"><i class="fas fa-file-contract"></i> 合約 ID:</label>
+          <input type="text" id="contract_id" v-model="formData.contract_id" class="form-control" placeholder="請輸入合約 ID">
+        </div>
       </div>
-      <div>
-        <label for="email">電子郵件:</label>
-        <input type="email" id="email" v-model="formData.email">
+      
+      <div class="form-group">
+        <label for="job"><i class="fas fa-briefcase"></i> 工作:</label>
+        <input type="text" id="job" v-model="formData.job" class="form-control" placeholder="請輸入職業資訊">
       </div>
-      <div>
-        <label for="property_id">物業 ID:</label>
-        <input type="text" id="property_id" v-model="formData.property_id">
+      
+      <fieldset class="form-section">
+        <legend><i class="fas fa-first-aid"></i> 緊急聯絡人資訊</legend>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="emergency_contact_name">緊急聯絡人姓名:</label>
+            <input type="text" id="emergency_contact_name" v-model="formData.emergency_contact_name" class="form-control" placeholder="請輸入緊急聯絡人姓名">
+          </div>
+          <div class="form-group">
+            <label for="emergency_contact_phone">緊急聯絡人電話:</label>
+            <input type="text" id="emergency_contact_phone" v-model="formData.emergency_contact_phone" class="form-control" placeholder="請輸入緊急聯絡人電話">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="emergency_contact_relationship">緊急聯絡人關係:</label>
+          <input type="text" id="emergency_contact_relationship" v-model="formData.emergency_contact_relationship" class="form-control" placeholder="請輸入與緊急聯絡人的關係">
+        </div>
+      </fieldset>
+      
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-save"></i> 儲存
+        </button>
+        <button type="button" class="btn btn-secondary" @click="cancel">
+          <i class="fas fa-times"></i> 取消
+        </button>
       </div>
-      <div>
-        <label for="contract_id">合約 ID:</label>
-        <input type="text" id="contract_id" v-model="formData.contract_id">
-      </div>
-      <div>
-        <label for="job">工作:</label>
-        <input type="text" id="job" v-model="formData.job">
-      </div>
-      <div>
-        <label for="emergency_contact_name">緊急聯絡人姓名:</label>
-        <input type="text" id="emergency_contact_name" v-model="formData.emergency_contact_name">
-      </div>
-      <div>
-        <label for="emergency_contact_phone">緊急聯絡人電話:</label>
-        <input type="text" id="emergency_contact_phone" v-model="formData.emergency_contact_phone">
-      </div>
-      <div>
-        <label for="emergency_contact_relationship">緊急聯絡人關係:</label>
-        <input type="text" id="emergency_contact_relationship" v-model="formData.emergency_contact_relationship">
-      </div>
-      <button type="submit">儲存</button>
-      <button type="button" @click="cancel">取消</button>
     </form>
   </div>
 </template>
@@ -105,30 +127,118 @@ const cancel = () => {
 
 <style scoped>
 .resident-form {
-  margin-top: 1rem;
-  padding: 1rem;
-  border: 1px solid #ccc;
+  padding: var(--spacing-md);
+  background-color: var(--bg-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  margin-bottom: var(--spacing-md);
 }
 
-.resident-form h2 {
-  margin-top: 0;
+.form-group {
+  margin-bottom: var(--spacing-md);
+  flex: 1;
+  min-width: 250px;
 }
 
-.resident-form div {
-  margin-bottom: 10px;
+.form-group-large {
+  flex: 2;
 }
 
-.resident-form label {
-  display: inline-block;
-  width: 120px;
-  margin-right: 10px;
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
 }
 
-.resident-form input {
-  padding: 5px;
+.form-group label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-weight: 500;
+  color: var(--text-color);
 }
 
-.resident-form button {
-  margin-right: 10px;
+.form-control {
+  display: block;
+  width: 100%;
+  padding: var(--spacing-sm);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.form-section {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.form-section legend {
+  padding: 0 var(--spacing-sm);
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.form-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.6em 1.5em;
+  border: none;
+  border-radius: 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.08);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, var(--primary-color) 60%, var(--primary-dark) 100%);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: linear-gradient(90deg, var(--primary-dark) 60%, var(--primary-color) 100%);
+  box-shadow: 0 4px 16px rgba(52, 152, 219, 0.18);
+  transform: translateY(-2px) scale(1.03);
+}
+
+.btn-secondary {
+  background: linear-gradient(90deg, var(--bg-light) 60%, var(--bg-dark) 100%);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+.btn-secondary:hover {
+  background: var(--bg-dark);
+  color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.10);
+  transform: translateY(-1px) scale(1.02);
+}
+
+.btn i {
+  font-size: 1.1em;
+  margin-right: 0.3em;
+}
+
+/* Form utility classes */
+::placeholder {
+  color: var(--text-lighter);
+  opacity: 0.7;
 }
 </style>
