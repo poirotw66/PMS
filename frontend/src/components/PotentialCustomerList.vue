@@ -74,7 +74,7 @@ onMounted(() => {
   fetchCustomers();
 });
 
-import { defineExpose } from 'vue';
+// Remove the import line and just use defineExpose directly
 defineExpose({ fetchCustomers });
 </script>
 

@@ -27,11 +27,13 @@ class Property(PropertyBase):
 # Shared properties for Property Asset
 class PropertyAssetBase(BaseModel):
     property_id: int
+    asset_type: Optional[str] = "家電類"
     purchase_date: Optional[str] = None
     name: str
     purchase_price: Optional[str] = None
     purchase_vendor: Optional[str] = None
     warranty_period: Optional[str] = None
+    current_status: Optional[str] = "良好"
 
 # Properties to receive on creation for Property Asset
 class PropertyAssetCreate(PropertyAssetBase):
@@ -54,8 +56,12 @@ class RepairRequestBase(BaseModel):
     property_id: int
     request_date: str
     description: str
+    repair_vendor: Optional[str] = None
+    repair_cost: Optional[str] = None
+    cost_bearer: Optional[str] = None
     resolution_method: Optional[str] = None
     resolution_date: Optional[str] = None
+    remarks: Optional[str] = None
 
 # Properties to receive on creation for Repair Request
 class RepairRequestCreate(RepairRequestBase):
