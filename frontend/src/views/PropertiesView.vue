@@ -1,6 +1,5 @@
 <template>
   <div class="properties-view">
-    <h1>物件管理</h1>
     
     <!-- 顯示物件表單或資產/維修管理組件 -->
     <PropertyForm 

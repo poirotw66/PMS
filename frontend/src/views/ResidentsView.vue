@@ -1,6 +1,15 @@
 <template>
   <div class="residents-view">
-    <h1>承租人管理</h1>
+    <!-- <div class="header-row"> -->
+    <div class="page-title">
+      <h1>承租人管理</h1>
+      <!-- 新增承租人按鈕 -->
+      <button @click="addResident" class="btn btn-success">
+        <i class="fas fa-user-plus"></i> 新增承租人
+      </button>
+    </div>
+    <!-- 新增/編輯承租人表單或彈窗 -->
+    <ResidentForm v-if="showForm" :resident="currentResident" @save="saveResident" @cancel="cancelForm" />
     <!-- 承租人列表 -->
     <table>
       <thead>
@@ -30,18 +39,18 @@
           <td>{{ resident.emergency_contact_phone }}</td>
           <td>{{ resident.emergency_contact_relationship }}</td>
           <td>
-            <button @click="editResident(resident.id)">編輯</button>
-            <button @click="deleteResident(resident.id)">刪除</button>
+            <button @click="editResident(resident.id)" class="btn btn-warning btn-sm">
+              <i class="fas fa-edit"></i> 編輯
+            </button>
+            <button @click="deleteResident(resident.id)" class="btn btn-danger btn-sm">
+              <i class="fas fa-trash"></i> 刪除
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
 
-    <!-- 新增承租人按鈕 -->
-    <button @click="addResident">新增承租人</button>
-
-    <!-- 新增/編輯承租人表單或彈窗 -->
-    <ResidentForm v-if="showForm" :resident="currentResident" @save="saveResident" @cancel="cancelForm" />
+    
   </div>
 </template>
 
@@ -121,6 +130,13 @@ const cancelForm = () => {
 <style scoped>
 .residents-view {
   padding: 1rem;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
 table {

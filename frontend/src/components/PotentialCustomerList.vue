@@ -24,8 +24,14 @@
           <td>{{ customer.viewing_records }}</td>
           <td>{{ customer.status }}</td>
           <td>
-            <button @click="$emit('edit-customer', customer)">編輯</button>
-            <button @click="deleteCustomer(customer.id)">刪除</button>
+            <div style="display: flex; gap: 0.5rem;">
+              <button @click="$emit('edit-customer', customer)" class="btn btn-warning btn-sm">
+                <i class="fas fa-edit"></i> 編輯
+              </button>
+              <button @click="deleteCustomer(customer.id)" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash"></i> 刪除
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
